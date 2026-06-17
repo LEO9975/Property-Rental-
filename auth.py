@@ -1,4 +1,5 @@
-from jose import JWTError, jwt
+import jwt
+from jwt.exceptions import InvalidTokenError
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
 
@@ -45,22 +46,17 @@ def create_access_token(data: dict):
 
     to_encode = data.copy()
 
-    expire = datetime.utcnow() + timedelta(
-        minutes=ACCESS_TOKEN_EXPIRE_MINUTES
-    )
+    expire = datetime.utcnow() + timedelta(minutes=60)
 
     to_encode.update({
         "exp": expire
     })
 
-    encoded_jwt = jwt.encode(
+    return jwt.encode(
         to_encode,
         SECRET_KEY,
         algorithm=ALGORITHM
     )
-
-    return encoded_jwt
-
 
 # VERIFY JWT TOKEN
 
@@ -74,13 +70,8 @@ def verify_token(token: str):
             algorithms=[ALGORITHM]
         )
 
-        username = payload.get("sub")
+        return payload.get("sub")
 
-        if username is None:
-            return None
-
-        return username
-
-    except JWTError:
+    except InvalidTokenError:
 
         return None
