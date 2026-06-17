@@ -1,0 +1,161 @@
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Add Property</title>
+
+<style>
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f6f9;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    height:100vh;
+}
+
+.card{
+
+    background:white;
+
+    width:500px;
+
+    padding:30px;
+
+    border-radius:15px;
+
+    box-shadow:
+    0 4px 12px
+    rgba(0,0,0,0.1);
+}
+
+h2{
+
+    text-align:center;
+
+    margin-bottom:20px;
+
+    color:#4f46e5;
+}
+
+input,
+textarea{
+
+    width:100%;
+
+    padding:12px;
+
+    margin-bottom:15px;
+
+    border:1px solid #ddd;
+
+    border-radius:8px;
+}
+
+button{
+
+    width:100%;
+
+    padding:12px;
+
+    border:none;
+
+    border-radius:8px;
+
+    background:#10b981;
+
+    color:white;
+
+    cursor:pointer;
+
+    font-size:16px;
+}
+
+button:hover{
+
+    background:#059669;
+}
+
+.back{
+
+    display:block;
+
+    text-align:center;
+
+    margin-top:15px;
+
+    text-decoration:none;
+
+    color:#4f46e5;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+    <h2>
+
+        Add Property
+
+    </h2>
+
+    <form action="/create-property"
+          method="post">
+
+        <input
+            type="text"
+            name="title"
+            placeholder="Property Title"
+            required>
+
+        <input
+            type="text"
+            name="location"
+            placeholder="Location"
+            required>
+
+        <input
+            type="number"
+            name="price"
+            placeholder="Monthly Rent"
+            required>
+
+        <textarea
+            name="description"
+            rows="5"
+            placeholder="Property Description"
+            required></textarea>
+
+        <button type="submit">
+
+            Save Property
+
+        </button>
+
+    </form>
+
+    <a href="/dashboard"
+       class="back">
+
+       ← Back To Dashboard
+
+    </a>
+
+</div>
+
+</body>
+
+</html>

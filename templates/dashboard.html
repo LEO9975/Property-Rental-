@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+}
+
+.header{
+
+    background:#4f46e5;
+
+    color:white;
+
+    padding:20px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+}
+
+.header h2{
+    font-size:24px;
+}
+
+.btn{
+
+    padding:10px 15px;
+
+    text-decoration:none;
+
+    border-radius:8px;
+
+    color:white;
+
+    display:inline-block;
+}
+
+.logout{
+    background:#ef4444;
+}
+
+.add{
+    background:#10b981;
+}
+
+.edit{
+    background:#3b82f6;
+}
+
+.delete{
+    background:#ef4444;
+}
+
+.container{
+
+    width:90%;
+
+    margin:30px auto;
+}
+
+.cards{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(300px,1fr));
+
+    gap:20px;
+}
+
+.card{
+
+    background:white;
+
+    padding:20px;
+
+    border-radius:15px;
+
+    box-shadow:
+    0 4px 10px
+    rgba(0,0,0,0.1);
+}
+
+.card h3{
+
+    margin-bottom:10px;
+
+    color:#4f46e5;
+}
+
+.card p{
+
+    margin-bottom:10px;
+
+    color:#555;
+}
+
+.actions{
+
+    display:flex;
+
+    gap:10px;
+
+    margin-top:15px;
+}
+
+.top-section{
+
+    margin-bottom:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+    <h2>
+
+        Welcome,
+        {{ user.username }}
+
+    </h2>
+
+    <a href="/logout"
+       class="btn logout">
+
+        Logout
+
+    </a>
+
+</div>
+
+<div class="container">
+
+    <div class="top-section">
+
+        {% if user.role == "admin" %}
+
+        <a href="/create-property"
+           class="btn add">
+
+           + Add Property
+
+        </a>
+
+        {% endif %}
+
+    </div>
+
+    <div class="cards">
+
+        {% for property in properties %}
+
+        <div class="card">
+
+            <h3>
+
+                {{ property.title }}
+
+            </h3>
+
+            <p>
+
+                📍 {{ property.location }}
+
+            </p>
+
+            <p>
+
+                💰 ₹{{ property.price }}
+
+            </p>
+
+            <p>
+
+                {{ property.description }}
+
+            </p>
+
+            <p>
+
+                Status:
+
+                {% if property.available %}
+
+                Available
+
+                {% else %}
+
+                Rented
+
+                {% endif %}
+
+            </p>
+            {% if user.role == "user" and property.available %}
+
+            <a href="/rent-property/{{ property.id }}"
+            class="btn add">
+
+            Rent Property
+
+            </a>
+
+            {% endif %}
+
+            {% if user.role == "admin" %}
+
+            <div class="actions">
+
+                <a href="/update-property/{{ property.id }}"
+                   class="btn edit">
+
+                    Edit
+
+                </a>
+
+                <a href="/delete-property/{{ property.id }}"
+                   class="btn delete">
+
+                    Delete
+
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
