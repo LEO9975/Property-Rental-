@@ -243,6 +243,7 @@ def create_property(
         price: int = Form(...),
         description: str = Form(...),
         access_token: str = Cookie(None),
+        image_url: str = Form(...),
         db: Session = Depends(get_db)
 ):
 
@@ -268,7 +269,8 @@ def create_property(
         location=location,
         price=price,
         description=description,
-        owner_id=user.id
+        owner_id=user.id,
+        image_url=image_url
     )
 
     db.add(property_obj)
@@ -288,6 +290,7 @@ def update_property_page(
         property_id: int,
         request: Request,
         access_token: str = Cookie(None),
+        image_url: str = Form(""),
         db: Session = Depends(get_db)
 ):
 
@@ -329,6 +332,7 @@ def update_property(
         title: str = Form(...),
         location: str = Form(...),
         price: int = Form(...),
+        image_url: str = Form(...),
         description: str = Form(...),
         access_token: str = Cookie(None),
         db: Session = Depends(get_db)
@@ -360,6 +364,8 @@ def update_property(
     property_obj.location = location
     property_obj.price = price
     property_obj.description = description
+    property_obj.image_url = image_url
+    
 
     db.commit()
 

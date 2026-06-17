@@ -132,11 +132,23 @@ button:hover{
             name="price"
             value="{{ property.price }}"
             required>
-
+        <input
+            type="text"
+            name="image_url"
+            value="{{ property.image_url }}"
+            placeholder="Image URL"
+            required>
+            
         <textarea
             name="description"
             rows="5"
             required>{{ property.description }}</textarea>
+
+        <input
+            type="text"
+            name="image_url"
+            value="{{ property.image_url }}"
+            required>
 
         <button type="submit">
 

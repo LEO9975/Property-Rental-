@@ -100,6 +100,10 @@ class Property(Base):
         "User",
         back_populates="properties"
     )
+    image_url: Mapped[str] = mapped_column(
+    String(500),
+    nullable=True
+    )
 
 
 # CREATE TABLES
