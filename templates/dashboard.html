@@ -1,271 +1,512 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurelia Residences | Dashboard</title>
+    <!-- Google Fonts: Playfair Display & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-gold: #C5A880;
+            --primary-gold-hover: #b3956d;
+            --dark-obsidian: #090D16;
+            --bg-neutral: #FAF9F6; /* Luxury Warm Alabaster */
+            --card-border: rgba(197, 168, 128, 0.2);
+            --text-dark: #1A1F2C;
+            --text-muted: #626B7A;
+            --text-light: #F1EBE4;
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+            --shadow-premium: 0 20px 40px -15px rgba(0, 0, 0, 0.05);
+        }
 
-<meta charset="UTF-8">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-sans);
+        }
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+        body {
+            background-color: var(--bg-neutral);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-<title>Dashboard</title>
+        /* Luxury Frosted Sticky Navbar */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(9, 13, 22, 0.95);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--card-border);
+            padding: 18px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
 
-<style>
+        .navbar-brand {
+            text-decoration: none;
+            color: var(--text-light);
+            font-family: var(--font-serif);
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,sans-serif;
-}
+        .navbar-brand span {
+            color: var(--primary-gold);
+        }
 
-body{
-    background:#f4f6f9;
-}
+        .user-nav-details {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
 
-.header{
+        .user-badge {
+            background: rgba(197, 168, 128, 0.15);
+            border: 1px solid var(--primary-gold);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-    background:#4f46e5;
+        .welcome-msg {
+            color: var(--text-light);
+            font-size: 15px;
+            font-weight: 500;
+        }
 
-    color:white;
+        .welcome-msg strong {
+            color: var(--primary-gold);
+            font-family: var(--font-serif);
+            font-size: 17px;
+        }
 
-    padding:20px;
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            border: none;
+        }
 
-    display:flex;
+        .btn-gold {
+            background: linear-gradient(135deg, var(--primary-gold), #b59871);
+            color: var(--dark-obsidian);
+            box-shadow: 0 4px 15px rgba(197, 168, 128, 0.25);
+        }
 
-    justify-content:space-between;
+        .btn-gold:hover {
+            background: linear-gradient(135deg, var(--primary-gold-hover), #9d815d);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(197, 168, 128, 0.35);
+        }
 
-    align-items:center;
-}
+        .btn-logout {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-light);
+        }
 
-.header h2{
-    font-size:24px;
-}
+        .btn-logout:hover {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: #ef4444;
+            color: #ef4444;
+        }
 
-.btn{
+        .btn-edit {
+            background: #f1f5f9;
+            color: #334155;
+            border: 1px solid #cbd5e1;
+        }
 
-    padding:10px 15px;
+        .btn-edit:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+            transform: translateY(-1px);
+        }
 
-    text-decoration:none;
+        .btn-delete {
+            background: rgba(239, 68, 68, 0.08);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
 
-    border-radius:8px;
+        .btn-delete:hover {
+            background: #ef4444;
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+        }
 
-    color:white;
+        .btn-rent {
+            width: 100%;
+            justify-content: center;
+            margin-top: 15px;
+            background: var(--dark-obsidian);
+            color: var(--primary-gold);
+            border: 1px solid var(--primary-gold);
+        }
 
-    display:inline-block;
-}
+        .btn-rent:hover {
+            background: var(--primary-gold);
+            color: var(--dark-obsidian);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(197, 168, 128, 0.25);
+        }
 
-.logout{
-    background:#ef4444;
-}
+        /* Content Container */
+        .container {
+            max-width: 1200px;
+            width: 90%;
+            margin: 40px auto 80px auto;
+            flex-grow: 1;
+        }
 
-.add{
-    background:#10b981;
-}
+        /* Hero Listing Section */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-.edit{
-    background:#3b82f6;
-}
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-.delete{
-    background:#ef4444;
-}
+        .hero-section h1 {
+            font-family: var(--font-serif);
+            font-size: 42px;
+            color: var(--dark-obsidian);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
 
-.container{
+        .hero-section p {
+            color: var(--text-muted);
+            font-size: 16px;
+            max-width: 600px;
+            margin: 0 auto 25px auto;
+            line-height: 1.6;
+        }
 
-    width:90%;
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-    margin:30px auto;
-}
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-.cards{
+        /* Premium Residence Card */
+        .residence-card {
+            background: white;
+            border: 1px solid rgba(197, 168, 128, 0.15);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-premium);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
 
-    display:grid;
+        .residence-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.08);
+            border-color: var(--primary-gold);
+        }
 
-    grid-template-columns:
-    repeat(auto-fit,minmax(300px,1fr));
+        .image-wrapper {
+            width: 100%;
+            height: 240px;
+            overflow: hidden;
+            position: relative;
+            background: #eae6e1;
+        }
 
-    gap:20px;
-}
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-.card{
+        .residence-card:hover .image-wrapper img {
+            transform: scale(1.06);
+        }
 
-    background:white;
+        /* Luxury Absolute Badges on Image */
+        .status-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
 
-    padding:20px;
+        .status-available {
+            background: rgba(9, 13, 22, 0.95);
+            color: var(--primary-gold);
+            border: 1px solid var(--primary-gold);
+        }
 
-    border-radius:15px;
+        .status-rented {
+            background: rgba(226, 232, 240, 0.95);
+            color: #64748b;
+            border: 1px solid #cbd5e1;
+        }
 
-    box-shadow:
-    0 4px 10px
-    rgba(0,0,0,0.1);
-}
+        /* Card Content Body */
+        .card-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
 
-.card h3{
+        .card-title {
+            font-family: var(--font-serif);
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--dark-obsidian);
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
 
-    margin-bottom:10px;
+        .card-location {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 500;
+        }
 
-    color:#4f46e5;
-}
+        .card-location svg {
+            color: var(--primary-gold);
+        }
 
-.card p{
+        .card-description {
+            font-size: 14px;
+            color: #525f75;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex-grow: 1;
+            /* Clamp to 3 lines */
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
 
-    margin-bottom:10px;
+        .price-divider {
+            height: 1px;
+            background: rgba(0, 0, 0, 0.06);
+            margin-bottom: 15px;
+        }
 
-    color:#555;
-}
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
 
-.actions{
+        .price-tag {
+            display: flex;
+            flex-direction: column;
+        }
 
-    display:flex;
+        .price-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
 
-    gap:10px;
+        .price-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dark-obsidian);
+        }
 
-    margin-top:15px;
-}
+        .price-value span {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
 
-.top-section{
+        /* Admin Action Buttons Group */
+        .actions-group {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            margin-top: 15px;
+        }
 
-    margin-bottom:20px;
-}
+        .actions-group a {
+            flex: 1;
+            justify-content: center;
+        }
 
-</style>
+        /* Empty State */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 80px 20px;
+            background: white;
+            border-radius: 20px;
+            border: 1px dashed var(--primary-gold);
+        }
 
+        .empty-state h3 {
+            font-family: var(--font-serif);
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: var(--text-muted);
+        }
+
+        /* Responsive breakpoints */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 5%;
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            .hero-section h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="header">
-
-    <h2>
-
-        Welcome,
-        {{ user.username }}
-
-    </h2>
-
-    <a href="/logout"
-       class="btn logout">
-
-        Logout
-
-    </a>
-
-</div>
+<nav class="navbar">
+    <a href="/dashboard" class="navbar-brand">AURELIA <span>RESIDENCES</span></a>
+    
+    <div class="user-nav-details">
+        <span class="user-badge">{{ user.role }}</span>
+        <span class="welcome-msg">Welcome, <strong>{{ user.username }}</strong></span>
+        <a href="/logout" class="btn btn-logout">Logout</a>
+    </div>
+</nav>
 
 <div class="container">
-
-    <div class="top-section">
-
+    
+    <header class="hero-section">
+        <h1>The Luxury Collection</h1>
+        <p>Explore our handpicked portfolios of prestigious penthouses, luxury estates, and premium apartments curated for the most refined lifestyles.</p>
+        
         {% if user.role == "admin" %}
-
-        <a href="/create-property"
-           class="btn add">
-
-           + Add Property
-
+        <a href="/create-property" class="btn btn-gold">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Add New Property
         </a>
-
         {% endif %}
+    </header>
 
-    </div>
-
-    <div class="cards">
-
+    <div class="cards-grid">
         {% for property in properties %}
-
-        <div class="card">
-
-            <h3>
-
-                {{ property.title }}
-
-            </h3>
-
-            <p>
-
-                📍 {{ property.location }}
-
-            </p>
-
-            <p>
-
-                💰 ₹{{ property.price }}
-
-            </p>
-
-            <p>
-
-                {{ property.description }}
-
-            </p>
-
-            <p>
-
-                Status:
-
+        <div class="residence-card">
+            
+            <div class="image-wrapper">
+                <!-- Absolute status badge on image -->
                 {% if property.available %}
-
-                Available
-
+                <span class="status-badge status-available">Available</span>
                 {% else %}
-
-                Rented
-
+                <span class="status-badge status-rented">Rented</span>
                 {% endif %}
-
-            </p>
-            {% if user.role == "user" and property.available %}
-
-            <a href="/rent-property/{{ property.id }}"
-            class="btn add">
-
-            Rent Property
-
-            </a>
-
-            {% endif %}
-            <img
-                src="{{ property.image_url }}"
-                alt="Property Image"
-                style="
-                    width:100%;
-                    height:220px;
-                    object-fit:cover;
-                    border-radius:10px;
-                    margin-bottom:10px;
-                ">
-
-            {% if user.role == "admin" %}
-
-            <div class="actions">
-
-                <a href="/update-property/{{ property.id }}"
-                   class="btn edit">
-
-                    Edit
-
-                </a>
-
-                <a href="/delete-property/{{ property.id }}"
-                   class="btn delete">
-
-                    Delete
-
-                </a>
-
+                
+                <img src="{{ property.image_url if property.image_url else 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=1000' }}" alt="{{ property.title }}">
             </div>
 
-            {% endif %}
+            <div class="card-body">
+                <h3 class="card-title">{{ property.title }}</h3>
+                
+                <div class="card-location">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    {{ property.location }}
+                </div>
+
+                <p class="card-description">{{ property.description }}</p>
+
+                <div class="price-divider"></div>
+
+                <div class="card-footer">
+                    <div class="price-tag">
+                        <span class="price-label">Monthly Rent</span>
+                        <span class="price-value">₹{{ property.price }} <span>/ mo</span></span>
+                    </div>
+                </div>
+
+                <!-- Action Button for tenants -->
+                {% if user.role == "user" and property.available %}
+                <a href="/rent-property/{{ property.id }}" class="btn btn-rent">
+                    Rent This Residence
+                </a>
+                {% endif %}
+
+                <!-- Action Buttons for admins -->
+                {% if user.role == "admin" %}
+                <div class="actions-group">
+                    <a href="/update-property/{{ property.id }}" class="btn btn-edit">Edit Details</a>
+                    <a href="/delete-property/{{ property.id }}" class="btn btn-delete">Delete</a>
+                </div>
+                {% endif %}
+            </div>
 
         </div>
-
+        {% else %}
+        <div class="empty-state">
+            <h3>No Properties Available</h3>
+            <p>Our catalog is currently fully booked. Please check back later or contact estate management.</p>
+        </div>
         {% endfor %}
-
     </div>
 
 </div>
 
 </body>
-
 </html>

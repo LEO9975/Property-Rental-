@@ -1,172 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurelia Residences | Update Details</title>
+    <!-- Google Fonts: Playfair Display & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-gold: #C5A880;
+            --primary-gold-hover: #b3956d;
+            --dark-obsidian: #090D16;
+            --bg-neutral: #FAF9F6;
+            --card-border: rgba(197, 168, 128, 0.25);
+            --text-dark: #1A1F2C;
+            --text-muted: #626B7A;
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+            --shadow-premium: 0 30px 60px -15px rgba(0, 0, 0, 0.08);
+        }
 
-<meta charset="UTF-8">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-sans);
+        }
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+        body {
+            background-color: var(--bg-neutral);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
 
-<title>Update Property</title>
+        .card {
+            background: white;
+            border: 1px solid var(--card-border);
+            width: 100%;
+            max-width: 600px;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: var(--shadow-premium);
+            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-<style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-body{
-    font-family:Arial,sans-serif;
-    background:#f4f6f9;
+        h2 {
+            font-family: var(--font-serif);
+            font-size: 30px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--dark-obsidian);
+            position: relative;
+            padding-bottom: 15px;
+        }
 
-    display:flex;
-    justify-content:center;
-    align-items:center;
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2.5px;
+            background-color: var(--primary-gold);
+        }
 
-    height:100vh;
-}
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-.card{
+        label {
+            display: block;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
 
-    background:white;
+        input,
+        textarea {
+            width: 100%;
+            padding: 14px 16px;
+            background: #FDFDFD;
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            color: var(--text-dark);
+            font-size: 14px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            outline: none;
+        }
 
-    width:500px;
+        input:focus,
+        textarea:focus {
+            background: white;
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 0 3px rgba(197, 168, 128, 0.15);
+        }
 
-    padding:30px;
+        textarea {
+            resize: vertical;
+        }
 
-    border-radius:15px;
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary-gold), #b59871);
+            color: var(--dark-obsidian);
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 15px rgba(197, 168, 128, 0.25);
+            margin-top: 15px;
+        }
 
-    box-shadow:
-    0 4px 12px
-    rgba(0,0,0,0.1);
-}
+        button:hover {
+            background: linear-gradient(135deg, var(--primary-gold-hover), #9d815d);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(197, 168, 128, 0.35);
+        }
 
-h2{
+        button:active {
+            transform: translateY(0);
+        }
 
-    text-align:center;
+        .back-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 25px;
+            text-decoration: none;
+            color: var(--primary-gold);
+            font-weight: 600;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
 
-    margin-bottom:20px;
-
-    color:#4f46e5;
-}
-
-input,
-textarea{
-
-    width:100%;
-
-    padding:12px;
-
-    margin-bottom:15px;
-
-    border:1px solid #ddd;
-
-    border-radius:8px;
-}
-
-button{
-
-    width:100%;
-
-    padding:12px;
-
-    border:none;
-
-    border-radius:8px;
-
-    background:#3b82f6;
-
-    color:white;
-
-    cursor:pointer;
-
-    font-size:16px;
-}
-
-button:hover{
-
-    background:#2563eb;
-}
-
-.back{
-
-    display:block;
-
-    text-align:center;
-
-    margin-top:15px;
-
-    text-decoration:none;
-
-    color:#4f46e5;
-}
-
-</style>
-
+        .back-link:hover {
+            color: var(--primary-gold-hover);
+        }
+    </style>
 </head>
-
 <body>
 
 <div class="card">
+    <h2>Update Residence</h2>
+    
+    <form action="/update-property/{{ property.id }}" method="post">
+        
+        <div class="form-group">
+            <label for="title">Residence Title</label>
+            <input 
+                type="text" 
+                id="title"
+                name="title" 
+                value="{{ property.title }}" 
+                required>
+        </div>
 
-    <h2>
+        <div class="form-group">
+            <label for="location">Location</label>
+            <input 
+                type="text" 
+                id="location"
+                name="location" 
+                value="{{ property.location }}" 
+                required>
+        </div>
 
-        Update Property
+        <div class="form-group">
+            <label for="price">Monthly Rent (₹)</label>
+            <input 
+                type="number" 
+                id="price"
+                name="price" 
+                value="{{ property.price }}" 
+                required>
+        </div>
 
-    </h2>
+        <div class="form-group">
+            <label for="image_url">Premium Image URL</label>
+            <input 
+                type="text" 
+                id="image_url"
+                name="image_url" 
+                value="{{ property.image_url }}" 
+                placeholder="Image URL"
+                required>
+        </div>
 
-    <form action="/update-property/{{ property.id }}"
-          method="post">
-
-        <input
-            type="text"
-            name="title"
-            value="{{ property.title }}"
-            required>
-
-        <input
-            type="text"
-            name="location"
-            value="{{ property.location }}"
-            required>
-
-        <input
-            type="number"
-            name="price"
-            value="{{ property.price }}"
-            required>
-        <input
-            type="text"
-            name="image_url"
-            value="{{ property.image_url }}"
-            placeholder="Image URL"
-            required>
-            
-        <textarea
-            name="description"
-            rows="5"
-            required>{{ property.description }}</textarea>
-
-        <input
-            type="text"
-            name="image_url"
-            value="{{ property.image_url }}"
-            required>
+        <div class="form-group">
+            <label for="description">Residence Description</label>
+            <textarea 
+                id="description"
+                name="description" 
+                rows="5" 
+                required>{{ property.description }}</textarea>
+        </div>
 
         <button type="submit">
-
-            Update Property
-
+            Apply Updates
         </button>
 
     </form>
 
-    <a href="/dashboard"
-       class="back">
-
-       ← Back To Dashboard
-
+    <a href="/dashboard" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        Back To Dashboard
     </a>
-
 </div>
 
 </body>
-
 </html>
