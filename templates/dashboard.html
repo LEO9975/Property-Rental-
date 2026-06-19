@@ -407,6 +407,116 @@
             color: var(--text-muted);
         }
 
+        /* Search and Filter Panel */
+        .control-panel {
+            background: white;
+            border: 1px solid var(--card-border);
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-premium);
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-input-wrapper {
+            flex: 2;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-input-wrapper svg {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 12px 12px 45px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s;
+            background: #fdfdfd;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 0 3px rgba(197, 168, 128, 0.15);
+            background: white;
+        }
+
+        .filter-select {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s;
+            background: #fdfdfd;
+            cursor: pointer;
+        }
+
+        .filter-select:focus {
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 0 3px rgba(197, 168, 128, 0.15);
+        }
+
+        .card-contact {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(197, 168, 128, 0.08);
+            border-radius: 8px;
+            border: 1px solid rgba(197, 168, 128, 0.15);
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+
+        .card-contact svg {
+            color: var(--primary-gold);
+            flex-shrink: 0;
+        }
+
+        .contact-label {
+            font-weight: 600;
+            color: var(--dark-obsidian);
+            margin-right: 4px;
+        }
+
+        .contact-value {
+            color: var(--text-muted);
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        .tenant-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            padding: 6px 10px;
+            background: rgba(239, 68, 68, 0.05);
+            color: #ef4444;
+            border-radius: 6px;
+            border: 1px dashed rgba(239, 68, 68, 0.2);
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .tenant-info svg {
+            flex-shrink: 0;
+        }
+
         /* Responsive breakpoints */
         @media (max-width: 768px) {
             .navbar {
@@ -447,9 +557,36 @@
         {% endif %}
     </header>
 
+    <div class="control-panel">
+        <div class="search-input-wrapper">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="searchInput" class="search-input" placeholder="Search by title, location, or features...">
+        </div>
+        <select id="statusFilter" class="filter-select">
+            <option value="all">All Properties</option>
+            <option value="available">Available Only</option>
+            <option value="rented">Rented Only</option>
+            {% if user.role == "user" %}
+            <option value="my-rentals">My Rented Properties</option>
+            {% endif %}
+        </select>
+        <select id="priceFilter" class="filter-select">
+            <option value="any">Any Price</option>
+            <option value="under-60k">Under ₹60,000</option>
+            <option value="60k-120k">₹60,000 - ₹120,000</option>
+            <option value="over-120k">Over ₹120,000</option>
+        </select>
+    </div>
+
     <div class="cards-grid">
         {% for property in properties %}
-        <div class="residence-card">
+        <div class="residence-card" 
+             data-title="{{ property.title|lower }}" 
+             data-location="{{ property.location|lower }}" 
+             data-description="{{ property.description|lower }}" 
+             data-available="{{ 'true' if property.available else 'false' }}" 
+             data-price="{{ property.price }}"
+             data-rented-by="{{ property.rented_by_id if property.rented_by_id else '' }}">
             
             <div class="image-wrapper">
                 <!-- Absolute status badge on image -->
@@ -472,6 +609,23 @@
 
                 <p class="card-description">{{ property.description }}</p>
 
+                <!-- Landlord Contact Details -->
+                <div class="card-contact">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    <div>
+                        <span class="contact-label">Agent:</span>
+                        <span class="contact-value">{{ property.owner.email if property.owner else 'management@aurelia.com' }}</span>
+                    </div>
+                </div>
+
+                <!-- Tenant Info for Admins -->
+                {% if user.role == "admin" and not property.available %}
+                <div class="tenant-info">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <span>Rented by: <strong>{{ property.rented_by.username if property.rented_by else 'Legacy Tenant' }}</strong></span>
+                </div>
+                {% endif %}
+
                 <div class="price-divider"></div>
 
                 <div class="card-footer">
@@ -488,11 +642,23 @@
                 </a>
                 {% endif %}
 
+                {% if user.role == "user" and not property.available and (property.rented_by_id == user.id or property.rented_by_id is none) %}
+                <a href="/unrent-property/{{ property.id }}" class="btn btn-rent" style="background: #ef4444; border-color: #ef4444; color: white;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                    Release Residence (Unrent)
+                </a>
+                {% endif %}
+
                 <!-- Action Buttons for admins -->
                 {% if user.role == "admin" %}
-                <div class="actions-group">
-                    <a href="/update-property/{{ property.id }}" class="btn btn-edit">Edit Details</a>
-                    <a href="/delete-property/{{ property.id }}" class="btn btn-delete">Delete</a>
+                <div class="actions-group" style="flex-wrap: wrap;">
+                    <a href="/update-property/{{ property.id }}" class="btn btn-edit" style="flex: 1 1 calc(50% - 5px);">Edit Details</a>
+                    <a href="/delete-property/{{ property.id }}" class="btn btn-delete" style="flex: 1 1 calc(50% - 5px);">Delete</a>
+                    {% if not property.available %}
+                    <a href="/unrent-property/{{ property.id }}" class="btn btn-rent" style="width: 100%; margin-top: 10px; background: #f1f5f9; color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); justify-content: center;">
+                        Force Release (Unrent)
+                    </a>
+                    {% endif %}
                 </div>
                 {% endif %}
             </div>
@@ -507,6 +673,75 @@
     </div>
 
 </div>
+
+<script>
+    const searchInput = document.getElementById('searchInput');
+    const statusFilter = document.getElementById('statusFilter');
+    const priceFilter = document.getElementById('priceFilter');
+    const cards = document.querySelectorAll('.residence-card');
+    const emptyState = document.querySelector('.empty-state');
+    const currentUserId = "{{ user.id }}";
+
+    function filterProperties() {
+        const query = searchInput.value.toLowerCase().trim();
+        const status = statusFilter.value;
+        const price = priceFilter.value;
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            const title = card.getAttribute('data-title');
+            const location = card.getAttribute('data-location');
+            const description = card.getAttribute('data-description');
+            const isAvailable = card.getAttribute('data-available') === 'true';
+            const priceVal = parseInt(card.getAttribute('data-price') || '0', 10);
+            const rentedBy = card.getAttribute('data-rented-by');
+
+            // Text search match
+            const matchesText = title.includes(query) || location.includes(query) || description.includes(query);
+
+            // Status filter match
+            let matchesStatus = true;
+            if (status === 'available') {
+                matchesStatus = isAvailable;
+            } else if (status === 'rented') {
+                matchesStatus = !isAvailable;
+            } else if (status === 'my-rentals') {
+                matchesStatus = !isAvailable && (rentedBy === currentUserId);
+            }
+
+            // Price filter match
+            let matchesPrice = true;
+            if (price === 'under-60k') {
+                matchesPrice = priceVal < 60000;
+            } else if (price === '60k-120k') {
+                matchesPrice = priceVal >= 60000 && priceVal <= 120000;
+            } else if (price === 'over-120k') {
+                matchesPrice = priceVal > 120000;
+            }
+
+            if (matchesText && matchesStatus && matchesPrice) {
+                card.style.display = '';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        if (emptyState) {
+            if (visibleCount === 0) {
+                emptyState.style.display = 'block';
+                emptyState.querySelector('h3').textContent = 'No Matching Residences';
+                emptyState.querySelector('p').textContent = 'Try adjusting your search query or filters.';
+            } else {
+                emptyState.style.display = 'none';
+            }
+        }
+    }
+
+    if (searchInput) searchInput.addEventListener('input', filterProperties);
+    if (statusFilter) statusFilter.addEventListener('change', filterProperties);
+    if (priceFilter) priceFilter.addEventListener('change', filterProperties);
+</script>
 
 </body>
 </html>

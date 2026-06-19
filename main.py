@@ -444,8 +444,45 @@ def rent_property(
     if property_obj:
 
         property_obj.available = False
+        property_obj.rented_by_id = user.id
 
         db.commit()
+
+    return RedirectResponse(
+        "/dashboard",
+        status_code=303
+    )
+
+@app.get("/unrent-property/{property_id}")
+def unrent_property(
+        property_id: int,
+        access_token: str = Cookie(None),
+        db: Session = Depends(get_db)
+):
+
+    username = verify_token(
+        access_token
+    )
+
+    if not username:
+        return RedirectResponse("/")
+
+    user = db.scalar(
+        select(User).where(
+            User.username == username
+        )
+    )
+
+    property_obj = db.get(
+        Property,
+        property_id
+    )
+
+    if property_obj:
+        if user.role == "admin" or property_obj.rented_by_id == user.id or property_obj.rented_by_id is None:
+            property_obj.available = True
+            property_obj.rented_by_id = None
+            db.commit()
 
     return RedirectResponse(
         "/dashboard",

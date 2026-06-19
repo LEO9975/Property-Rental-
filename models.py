@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, String, Integer, Boolean, ForeignKey
+from sqlalchemy import create_engine, String, Integer, Boolean, ForeignKey, text
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import Mapped
@@ -57,7 +57,8 @@ class User(Base):
 
     properties = relationship(
         "Property",
-        back_populates="owner"
+        back_populates="owner",
+        foreign_keys="[Property.owner_id]"
     )
 
 
@@ -98,14 +99,33 @@ class Property(Base):
 
     owner = relationship(
         "User",
-        back_populates="properties"
+        back_populates="properties",
+        foreign_keys=[owner_id]
     )
     image_url: Mapped[str] = mapped_column(
     String(500),
     nullable=True
     )
 
+    rented_by_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id"),
+        nullable=True
+    )
+
+    rented_by = relationship(
+        "User",
+        foreign_keys=[rented_by_id]
+    )
+
 
 # CREATE TABLES
 
 Base.metadata.create_all(bind=engine)
+
+# Start migration: Add rented_by_id to properties table if not present
+with engine.connect() as conn:
+    try:
+        conn.execute(text("ALTER TABLE properties ADD COLUMN rented_by_id INTEGER REFERENCES users(id)"))
+        conn.commit()
+    except Exception:
+        pass
