@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ property.title }} | Aurelia Residences</title>
+    <!-- Google Fonts: Playfair Display & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-gold: #C5A880;
+            --primary-gold-hover: #b3956d;
+            --dark-obsidian: #090D16;
+            --bg-neutral: #FAF9F6; /* Luxury Warm Alabaster */
+            --card-border: rgba(197, 168, 128, 0.2);
+            --text-dark: #1A1F2C;
+            --text-muted: #626B7A;
+            --text-light: #F1EBE4;
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+            --shadow-premium: 0 20px 40px -15px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-sans);
+        }
+
+        body {
+            background-color: var(--bg-neutral);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Luxury Frosted Sticky Navbar */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(9, 13, 22, 0.95);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--card-border);
+            padding: 18px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .navbar-brand {
+            text-decoration: none;
+            color: var(--text-light);
+            font-family: var(--font-serif);
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .navbar-brand span {
+            color: var(--primary-gold);
+        }
+
+        .user-nav-details {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-badge {
+            background: rgba(197, 168, 128, 0.15);
+            border: 1px solid var(--primary-gold);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .welcome-msg {
+            color: var(--text-light);
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .welcome-msg strong {
+            color: var(--primary-gold);
+            font-family: var(--font-serif);
+            font-size: 17px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--primary-gold), #b59871);
+            color: var(--dark-obsidian);
+            box-shadow: 0 4px 15px rgba(197, 168, 128, 0.25);
+        }
+
+        .btn-gold:hover {
+            background: linear-gradient(135deg, var(--primary-gold-hover), #9d815d);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(197, 168, 128, 0.35);
+        }
+
+        .btn-logout {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-light);
+        }
+
+        .btn-logout:hover {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary-gold);
+            color: var(--primary-gold);
+        }
+
+        .btn-outline:hover {
+            background: rgba(197, 168, 128, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .btn-rent {
+            background: var(--dark-obsidian);
+            color: var(--primary-gold);
+            border: 1px solid var(--primary-gold);
+            width: 100%;
+        }
+
+        .btn-rent:hover {
+            background: var(--primary-gold);
+            color: var(--dark-obsidian);
+            transform: translateY(-2px);
+        }
+
+        .btn-unrent {
+            background: #ef4444;
+            color: white;
+            width: 100%;
+        }
+
+        .btn-unrent:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .btn-edit {
+            background: #f1f5f9;
+            color: #334155;
+            border: 1px solid #cbd5e1;
+        }
+
+        .btn-edit:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-delete {
+            background: rgba(239, 68, 68, 0.08);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .btn-delete:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            width: 90%;
+            margin: 40px auto 80px auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+
+        /* Detail Block */
+        .property-main {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .property-header {
+            background: white;
+            border: 1px solid rgba(197, 168, 128, 0.15);
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: var(--shadow-premium);
+            position: relative;
+        }
+
+        .property-image-container {
+            width: 100%;
+            height: 480px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #eae6e1;
+            position: relative;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow-premium);
+        }
+
+        .property-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .status-available {
+            background: rgba(9, 13, 22, 0.95);
+            color: var(--primary-gold);
+            border: 1px solid var(--primary-gold);
+        }
+
+        .status-rented {
+            background: rgba(226, 232, 240, 0.95);
+            color: #64748b;
+            border: 1px solid #cbd5e1;
+        }
+
+        .property-title {
+            font-family: var(--font-serif);
+            font-size: 36px;
+            color: var(--dark-obsidian);
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .property-location {
+            font-size: 15px;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+        }
+
+        .property-location svg {
+            color: var(--primary-gold);
+        }
+
+        /* Specs Row */
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            background: #FAF9F6;
+            border: 1px solid rgba(197, 168, 128, 0.15);
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+        }
+
+        .spec-item {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .spec-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--dark-obsidian);
+        }
+
+        .spec-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .property-description {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #4a5568;
+        }
+
+        .section-title {
+            font-family: var(--font-serif);
+            font-size: 24px;
+            color: var(--dark-obsidian);
+            margin-bottom: 20px;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: var(--primary-gold);
+        }
+
+        /* Map Block */
+        .map-section {
+            background: white;
+            border: 1px solid rgba(197, 168, 128, 0.15);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: var(--shadow-premium);
+        }
+
+        .map-wrapper {
+            width: 100%;
+            height: 350px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(197, 168, 128, 0.2);
+        }
+
+        /* Sidebar / Sticky Actions */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .action-card {
+            background: white;
+            border: 1px solid rgba(197, 168, 128, 0.15);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: var(--shadow-premium);
+            position: sticky;
+            top: 100px;
+        }
+
+        .sidebar-price-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-price-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--dark-obsidian);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-price-value span {
+            font-size: 16px;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .sidebar-divider {
+            height: 1px;
+            background: rgba(0, 0, 0, 0.06);
+            margin: 20px 0;
+        }
+
+        .sidebar-info-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .sidebar-info-label {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .sidebar-info-value {
+            font-weight: 600;
+            color: var(--dark-obsidian);
+        }
+
+        /* Review and Rating Section */
+        .reviews-section {
+            background: white;
+            border: 1px solid rgba(197, 168, 128, 0.15);
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: var(--shadow-premium);
+        }
+
+        .rating-summary {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .avg-rating-box {
+            background: var(--dark-obsidian);
+            color: var(--primary-gold);
+            padding: 15px 22px;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid var(--primary-gold);
+        }
+
+        .avg-rating-value {
+            font-size: 36px;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .avg-rating-stars {
+            color: var(--primary-gold);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .rating-stats-text {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .review-form {
+            margin-bottom: 35px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group select,
+        .form-group textarea,
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 0 3px rgba(197, 168, 128, 0.15);
+        }
+
+        .reviews-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .review-card {
+            background: #FAF9F6;
+            border: 1px solid rgba(197, 168, 128, 0.1);
+            padding: 20px;
+            border-radius: 16px;
+        }
+
+        .review-card-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .reviewer-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--dark-obsidian);
+        }
+
+        .review-stars {
+            color: #C5A880;
+            font-size: 12px;
+        }
+
+        .review-date {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .review-comment {
+            font-size: 14px;
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        /* Maintenance Request Card */
+        .maintenance-section {
+            background: white;
+            border: 1px solid rgba(197, 168, 128, 0.15);
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: var(--shadow-premium);
+        }
+
+        .request-card {
+            background: #FAF9F6;
+            border: 1px solid rgba(197, 168, 128, 0.15);
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .status-pill {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-pending { background: #fee2e2; color: #ef4444; }
+        .status-progress { background: #fef3c7; color: #d97706; }
+        .status-resolved { background: #dcfce7; color: #16a34a; }
+
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .property-image-container {
+                height: 300px;
+            }
+            .action-card {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="/dashboard" class="navbar-brand">Unique <span>Estates</span></a>
+    
+    <div class="user-nav-details">
+        <span class="user-badge">{{ user.role }}</span>
+        <span class="welcome-msg">Welcome, <strong>{{ user.username }}</strong></span>
+        <a href="/logout" class="btn btn-logout">Logout</a>
+    </div>
+</nav>
+
+<div class="container">
+    
+    <!-- MAIN PROPERTY DETAILS -->
+    <div class="property-main">
+        
+        <div class="property-header">
+            <div class="property-image-container">
+                <!-- Status Badge -->
+                {% if property.available %}
+                <span class="status-badge status-available">Available</span>
+                {% else %}
+                <span class="status-badge status-rented">Rented</span>
+                {% endif %}
+                
+                <img src="{{ property.image_url if property.image_url else 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=1000' }}" alt="{{ property.title }}">
+            </div>
+
+            <h1 class="property-title">{{ property.title }}</h1>
+            
+            <div class="property-location">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                {{ property.location }}
+            </div>
+
+            <!-- Specs Grid -->
+            <div class="specs-grid">
+                <div class="spec-item">
+                    <span class="spec-value">{{ property.bedrooms if property.bedrooms is not none else 2 }}</span>
+                    <span class="spec-label">Bedrooms</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-value">{{ property.bathrooms if property.bathrooms is not none else 2 }}</span>
+                    <span class="spec-label">Bathrooms</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-value">₹{{ property.price }}</span>
+                    <span class="spec-label">Rent / Mo</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-value">{{ property.area if property.area is not none else 1200 }}</span>
+                    <span class="spec-label">Sq Ft Area</span>
+                </div>
+            </div>
+
+            <h2 class="section-title">About This Residence</h2>
+            <p class="property-description" style="margin-bottom: 25px;">{{ property.description }}</p>
+
+            <h2 class="section-title">Included Amenities</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;">
+                {% if property.amenities %}
+                    {% for amenity in property.amenities.split(',') %}
+                    <span style="background: rgba(197, 168, 128, 0.1); border: 1px solid rgba(197, 168, 128, 0.2); padding: 8px 16px; border-radius: 30px; font-size: 13px; color: var(--primary-gold); font-weight: 600;">
+                        {{ amenity.strip() }}
+                    </span>
+                    {% endfor %}
+                {% else %}
+                    <span style="color: var(--text-muted); font-size: 14px;">Standard luxury inclusions.</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Google Maps Location -->
+        <div class="map-section">
+            <h2 class="section-title">Neighborhood & Location</h2>
+            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 15px;">Located in a highly desirable neighborhood of {{ property.location }}. Explore the map below for neighborhood details.</p>
+            <div class="map-wrapper">
+                <iframe 
+                    width="100%" 
+                    height="100%" 
+                    frameborder="0" 
+                    scrolling="no" 
+                    marginheight="0" 
+                    marginwidth="0" 
+                    src="https://maps.google.com/maps?q={{ property.location }}&t=&z=14&ie=UTF8&iwloc=&output=embed">
+                </iframe>
+            </div>
+        </div>
+
+        <!-- REVIEWS SECTION -->
+        <div class="reviews-section">
+            <h2 class="section-title">Client Reviews & Experiences</h2>
+            
+            <div class="rating-summary">
+                <div class="avg-rating-box">
+                    <div class="avg-rating-value">{{ avg_rating if reviews else 'N/A' }}</div>
+                    <div class="avg-rating-stars">
+                        {% if reviews %}
+                            {% for i in range(1, 6) %}
+                                {% if avg_rating >= i %}★{% else %}☆{% endif %}
+                            {% endfor %}
+                        {% else %}
+                            ☆☆☆☆☆
+                        {% endif %}
+                    </div>
+                </div>
+                <div>
+                    <h3 style="font-size: 16px; margin-bottom: 4px;">Overall Rating</h3>
+                    <p class="rating-stats-text">Based on {{ reviews|length }} client reviews and guest logs.</p>
+                </div>
+            </div>
+
+            <!-- Write Review Form -->
+            <div class="review-form">
+                <h3 style="font-size: 16px; margin-bottom: 15px; font-family: var(--font-serif);">Leave Your Review</h3>
+                <form action="/property/{{ property.id }}/review" method="post">
+                    <div class="form-group" style="max-width: 200px;">
+                        <label for="rating">Rating (Stars)</label>
+                        <select name="rating" id="rating" required>
+                            <option value="5">5 - Excellent</option>
+                            <option value="4">4 - Very Good</option>
+                            <option value="3">3 - Average</option>
+                            <option value="2">2 - Poor</option>
+                            <option value="1">1 - Terrible</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="comment">Your Experience</label>
+                        <textarea name="comment" id="comment" rows="3" placeholder="Share your experience or inquiry details about this residence..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-gold" style="padding: 10px 20px; font-size: 13px;">Submit Review</button>
+                </form>
+            </div>
+
+            <!-- Reviews List -->
+            <div class="reviews-list">
+                {% for review in reviews %}
+                <div class="review-card">
+                    <div class="review-card-header">
+                        <div>
+                            <span class="reviewer-name">{{ review.user.username }}</span>
+                            <div class="review-stars">
+                                {% for i in range(1, 6) %}
+                                    {% if review.rating >= i %}★{% else %}☆{% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <span class="review-date">{{ review.created_at if review.created_at else 'Recent' }}</span>
+                    </div>
+                    <p class="review-comment">"{{ review.comment }}"</p>
+                </div>
+                {% else %}
+                <p style="color: var(--text-muted); font-size: 14px; text-align: center; padding: 20px 0;">No reviews listed yet. Be the first to share your thoughts!</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- MAINTENANCE REQUESTS (FOR CURRENT TENANT OR ADMIN) -->
+        {% if user.role == "admin" or property.rented_by_id == user.id %}
+        <div class="maintenance-section">
+            <h2 class="section-title">Maintenance & Service Log</h2>
+            
+            {% if property.rented_by_id == user.id %}
+            <div style="margin-bottom: 30px; padding-bottom: 25px; border-bottom: 1px solid rgba(0, 0, 0, 0.06);">
+                <h3 style="font-size: 16px; margin-bottom: 15px; font-family: var(--font-serif);">Request Maintenance Service</h3>
+                <form action="/property/{{ property.id }}/maintenance" method="post">
+                    <div class="form-group">
+                        <label for="issue_description">Describe the Issue</label>
+                        <textarea name="issue_description" id="issue_description" rows="3" placeholder="Describe the maintenance required (e.g. plumbing repair, appliance service)..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-gold" style="padding: 10px 20px; font-size: 13px;">Submit Ticket</button>
+                </form>
+            </div>
+            {% endif %}
+
+            <h3 style="font-size: 16px; margin-bottom: 15px; font-family: var(--font-serif);">Service Ticket History</h3>
+            <div class="requests-list">
+                {% for req in maintenance_requests %}
+                <div class="request-card">
+                    <div class="request-header">
+                        <div>
+                            <span style="font-size: 12px; color: var(--text-muted); font-weight: 500;">Ticket #{{ req.id }}</span>
+                            <span class="status-pill {% if req.status == 'Pending' %}status-pending{% elif req.status == 'In Progress' %}status-progress{% else %}status-resolved{% endif %}" style="margin-left: 8px;">
+                                {{ req.status }}
+                            </span>
+                        </div>
+                        <span style="font-size: 11px; color: var(--text-muted);">{{ req.created_at }}</span>
+                    </div>
+                    <p style="font-size: 14px; color: var(--text-dark); font-weight: 500; margin-bottom: 5px;">"{{ req.issue_description }}"</p>
+                    <p style="font-size: 12px; color: var(--text-muted);">Submitted by: <strong>{{ req.tenant.username }}</strong></p>
+
+                    <!-- Admin Status Update Form -->
+                    {% if user.role == "admin" %}
+                    <form action="/maintenance/{{ req.id }}/status" method="post" style="margin-top: 15px; display: flex; gap: 10px; align-items: center;">
+                        <span style="font-size: 12px; font-weight: 600; color: var(--text-dark);">Update Status:</span>
+                        <select name="status" style="padding: 4px 8px; font-size: 12px; width: auto; border: 1px solid #cbd5e1; border-radius: 4px;">
+                            <option value="Pending" {% if req.status == 'Pending' %}selected{% endif %}>Pending</option>
+                            <option value="In Progress" {% if req.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+                            <option value="Resolved" {% if req.status == 'Resolved' %}selected{% endif %}>Resolved</option>
+                        </select>
+                        <button type="submit" class="btn btn-gold" style="padding: 5px 12px; font-size: 11px; border-radius: 4px;">Save</button>
+                    </form>
+                    {% endif %}
+                </div>
+                {% else %}
+                <p style="color: var(--text-muted); font-size: 14px; text-align: center; padding: 20px 0;">No active maintenance tickets for this residence.</p>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+
+    <!-- SIDEBAR STICKY ACTIONS CARD -->
+    <div class="sidebar">
+        <div class="action-card">
+            <div class="sidebar-price-label">Monthly Rent</div>
+            <div class="sidebar-price-value">₹{{ property.price }} <span>/ month</span></div>
+            
+            <div class="sidebar-divider"></div>
+            
+            <div class="sidebar-info-item">
+                <span class="sidebar-info-label">Status</span>
+                <span class="sidebar-info-value" style="color: {% if property.available %}#16a34a{% else %}#ef4444{% endif %};">
+                    {{ 'Available' if property.available else 'Leased' }}
+                </span>
+            </div>
+            
+            <div class="sidebar-info-item">
+                <span class="sidebar-info-label">Agent Representative</span>
+                <span class="sidebar-info-value">{{ property.owner.username }}</span>
+            </div>
+
+            <div class="sidebar-info-item">
+                <span class="sidebar-info-label">Contact Details</span>
+                <span class="sidebar-info-value" style="font-family: monospace; font-size: 13px;">{{ property.owner.email }}</span>
+            </div>
+
+            {% if not property.available %}
+            <div class="sidebar-info-item">
+                <span class="sidebar-info-label">Current Lessee</span>
+                <span class="sidebar-info-value">{{ property.rented_by.username if property.rented_by else 'Legacy Tenant' }}</span>
+            </div>
+            {% endif %}
+
+            <div class="sidebar-divider"></div>
+
+            <!-- Customer Actions -->
+            {% if user.role == "user" %}
+                {% if property.available %}
+                <a href="/rent-property/{{ property.id }}" class="btn btn-rent">Rent This Residence</a>
+                {% elif property.rented_by_id == user.id or property.rented_by_id is none %}
+                <a href="/unrent-property/{{ property.id }}" class="btn btn-unrent">Release Residence (Unrent)</a>
+                {% else %}
+                <button class="btn" style="width: 100%; background: #f1f5f9; color: #94a3b8; cursor: not-allowed;" disabled>Currently Leased</button>
+                {% endif %}
+            {% endif %}
+
+            <!-- Admin Actions -->
+            {% if user.role == "admin" %}
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <a href="/update-property/{{ property.id }}" class="btn btn-edit" style="width: 100%;">Edit Details</a>
+                <a href="/delete-property/{{ property.id }}" class="btn btn-delete" style="width: 100%;">Delete Property</a>
+                {% if not property.available %}
+                <a href="/unrent-property/{{ property.id }}" class="btn btn-unrent" style="width: 100%; background: #f1f5f9; color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); justify-content: center;">Force Release (Unrent)</a>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <a href="/dashboard" class="btn btn-outline" style="width: 100%; margin-top: 15px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Return to Directory
+            </a>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
